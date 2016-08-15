@@ -12,7 +12,8 @@ import {
   Text,
   StyleSheet,
   Image,
-  Navigator} from 'react-native';
+  Navigator,
+  TouchableHighlight} from 'react-native';
 
 class ReactNativeDemo extends Component {
 
@@ -22,6 +23,7 @@ class ReactNativeDemo extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([''])
     };
+    this.customizedRenderRow = this.customizedRenderRow.bind(this);
   }
 
   componentWillMount() {
@@ -41,13 +43,15 @@ class ReactNativeDemo extends Component {
 
   customizedRenderRow(rowData) {
     return (
-      <View style={styles.container}>
-        <Image style={styles.image} source={{uri: rowData.preview}}>
-          <View style={styles.alphaContainer}>
-            <Text style={styles.text}>{rowData.title}</Text>
-          </View>
-        </Image>
-      </View>
+      <TouchableHighlight onPress={() => this.showHeadlineDetail(rowData)}>
+        <View style={styles.container}>
+          <Image style={styles.image} source={{uri: rowData.preview}}>
+            <View style={styles.alphaContainer}>
+              <Text style={styles.text}>{rowData.title}</Text>
+            </View>
+          </Image>
+        </View>
+      </TouchableHighlight>
     );
   }
 
@@ -57,11 +61,15 @@ class ReactNativeDemo extends Component {
       .then((responseJson) => {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(responseJson.data)
-        })
+        });
       })
       .catch((error) => {
         console.error(error);
-      })
+      });
+  }
+
+  showHeadlineDetail(rowData) {
+    console.log(rowData.title)
   }
 
 }
