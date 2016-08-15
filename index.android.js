@@ -23,7 +23,6 @@ class ReactNativeDemo extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([''])
     };
-    this.customizedRenderRow = this.customizedRenderRow.bind(this);
   }
 
   componentWillMount() {
@@ -35,7 +34,7 @@ class ReactNativeDemo extends Component {
       <View style={styles.container}>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={this.customizedRenderRow}
+          renderRow={this.customizedRenderRow.bind(this)}
         />
       </View>
     );
