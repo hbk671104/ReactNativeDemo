@@ -65,7 +65,7 @@ export default class HeadlineListScene extends Component {
             });
             this.getHeaderline(this.state.queryParams);
           }}
-          onEndReachedThreshold={125}
+          onEndReachedThreshold={100}
         />
       </View>
     );

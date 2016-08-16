@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, StatusBar, View } from 'react-native';
+import { AppRegistry, Navigator } from 'react-native';
 import HeadlineListScene from './HeadlineListScene';
 import HeadlineDetailScene from './HeadlineDetailScene';
 
@@ -13,15 +13,10 @@ class ReactNativeDemo extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <StatusBar
-          hidden={true}
-        />
-        <Navigator
-          initialRoute={{name: 'HeadlineListScene', object: ''}}
-          renderScene={this.renderScene.bind(this)}
-        />
-      </View>
+      <Navigator
+        initialRoute={{name: 'HeadlineListScene', object: ''}}
+        renderScene={this.renderScene.bind(this)}
+      />
     );
   }
 
