@@ -38,6 +38,8 @@ export default class HeadlineListScene extends Component {
               }}
             />
           }
+          onEndReached={() => console.log("end reached")}
+          onEndReachedThreshold={50}
         />
       </View>
     );
