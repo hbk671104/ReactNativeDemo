@@ -27,7 +27,7 @@ export default class HeadlineListScene extends Component {
   }
 
   componentWillMount() {
-    this.getHeaderline(this.state.queryParams);
+    this.getHeaderline();
   }
 
   render() {
@@ -44,9 +44,10 @@ export default class HeadlineListScene extends Component {
                 params.headline_id = 0;
                 this.setState({
                   refreshing: true,
-                  queryParams: params
+                  queryParams: params,
+                  headlineList: []
                 });
-                this.getHeaderline(this.state.queryParams);
+                this.getHeaderline();
               }}
             />
           }
@@ -63,9 +64,9 @@ export default class HeadlineListScene extends Component {
             this.setState({
               queryParams: params
             });
-            this.getHeaderline(this.state.queryParams);
+            this.getHeaderline();
           }}
-          onEndReachedThreshold={100}
+          onEndReachedThreshold={50}
         />
       </View>
     );
@@ -85,9 +86,9 @@ export default class HeadlineListScene extends Component {
     );
   }
 
-  getHeaderline(params) {
+  getHeaderline() {
     fetch('http://web.meishuquan.net/rest/headline/get-headline-list?'
-    + QueryString.stringify(params))
+    + QueryString.stringify(this.state.queryParams))
       .then((response) => response.json())
       .then((responseJson) => {
         const headlineList = this.state.headlineList.concat(responseJson.data);
