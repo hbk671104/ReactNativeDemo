@@ -14,7 +14,7 @@ class ReactNativeDemo extends Component {
   render() {
     return (
       <Navigator
-        initialRoute={{name: 'HeadlineListScene', passInObject: 'object'}}
+        initialRoute={{name: 'HeadlineListScene', object: ''}}
         renderScene={this.renderScene.bind(this)}
       />
     );
@@ -24,10 +24,10 @@ class ReactNativeDemo extends Component {
     switch (route.name) {
       case 'HeadlineListScene':
         return (<HeadlineListScene navigator={navigator}
-          passInObject={route.passInObject}/>);
+          object={route.object}/>);
       case 'HeadlineDetailScene':
         return (<HeadlineDetailScene navigator={navigator}
-          passInObject={route.passInObject}/>);
+          object={route.object}/>);
     }
   }
 

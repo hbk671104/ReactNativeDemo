@@ -9,7 +9,7 @@ export default class HeadlineDetailScene extends Component {
   render() {
     return (
       <WebView
-        source={{uri: this.props.passInObject.share_link}}
+        source={{uri: this.props.object.share_link}}
         userAgent='MeishuquanMessenger'
       />
     );

@@ -74,7 +74,7 @@ export default class HeadlineListScene extends Component {
   showHeadlineDetail(rowData) {
     this.props.navigator.push({
       name: 'HeadlineDetailScene',
-      passInObject: rowData
+      object: rowData
     });
   }
 
