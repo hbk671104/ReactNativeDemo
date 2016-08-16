@@ -16,6 +16,7 @@ export default class HeadlineListScene extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
     this.state = {
       dataSource: ds.cloneWithRows(['']),
+      headlineList: [],
       refreshing: false,
       queryParams: {
         category: 161,
@@ -26,7 +27,7 @@ export default class HeadlineListScene extends Component {
   }
 
   componentWillMount() {
-    this.getHeaderline();
+    this.getHeaderline(this.state.queryParams);
   }
 
   render() {
@@ -45,7 +46,7 @@ export default class HeadlineListScene extends Component {
                   refreshing: true,
                   queryParams: params
                 });
-                this.getHeaderline();
+                this.getHeaderline(this.state.queryParams);
               }}
             />
           }
@@ -62,9 +63,9 @@ export default class HeadlineListScene extends Component {
             this.setState({
               queryParams: params
             });
-            this.getHeaderline();
+            this.getHeaderline(this.state.queryParams);
           }}
-          onEndReachedThreshold={50}
+          onEndReachedThreshold={125}
         />
       </View>
     );
@@ -84,13 +85,15 @@ export default class HeadlineListScene extends Component {
     );
   }
 
-  getHeaderline() {
+  getHeaderline(params) {
     fetch('http://web.meishuquan.net/rest/headline/get-headline-list?'
-    + QueryString.stringify(this.state.queryParams))
+    + QueryString.stringify(params))
       .then((response) => response.json())
       .then((responseJson) => {
+        const headlineList = this.state.headlineList.concat(responseJson.data);
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseJson.data),
+          headlineList: headlineList,
+          dataSource: this.state.dataSource.cloneWithRows(headlineList),
           refreshing: false
         });
       })
