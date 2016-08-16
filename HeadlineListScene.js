@@ -6,7 +6,9 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableHighlight} from 'react-native';
+  TouchableHighlight,
+  BackAndroid,
+  Platform } from 'react-native';
 import QueryString from 'query-string';
 
 export default class HeadlineListScene extends Component {
@@ -28,6 +30,18 @@ export default class HeadlineListScene extends Component {
 
   componentWillMount() {
     this.getHeaderline();
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', () => {
+        if (this.props.navigator.getCurrentRoutes().length > 1) {
+          this.props.navigator.pop();
+          return true;
+        }
+        return false;
+      });
+    }
   }
 
   render() {
