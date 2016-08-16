@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   TouchableHighlight} from 'react-native';
+import QueryString from 'query-string';
 
 export default class HeadlineListScene extends Component {
 
@@ -15,7 +16,12 @@ export default class HeadlineListScene extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
     this.state = {
       dataSource: ds.cloneWithRows(['']),
-      refreshing: false
+      refreshing: false,
+      queryParams: {
+        category: 161,
+        limit: 20,
+        headline_id: 0
+      }
     };
   }
 
@@ -33,12 +39,31 @@ export default class HeadlineListScene extends Component {
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={() => {
-                this.setState({refreshing: true});
+                const params = this.state.queryParams;
+                params.headline_id = 0;
+                this.setState({
+                  refreshing: true,
+                  queryParams: params
+                });
                 this.getHeaderline();
               }}
             />
           }
-          onEndReached={() => console.log("end reached")}
+          onEndReached={() => {
+            // Get last row data
+            const dataSource = this.state.dataSource;
+            const lastRowIndex = dataSource.getRowCount() - 1;
+            const lastSectionIndex = dataSource.getRowAndSectionCount() - dataSource.getRowCount() - 1;
+            const lastRowData = dataSource.getRowData(lastSectionIndex, lastRowIndex);
+
+            // Set headline id
+            const params = this.state.queryParams;
+            params.headline_id = lastRowData.id;
+            this.setState({
+              queryParams: params
+            });
+            this.getHeaderline();
+          }}
           onEndReachedThreshold={50}
         />
       </View>
@@ -60,7 +85,8 @@ export default class HeadlineListScene extends Component {
   }
 
   getHeaderline() {
-    fetch('http://web.meishuquan.net/rest/headline/get-headline-list?category=161&limit=20&headline_id=0')
+    fetch('http://web.meishuquan.net/rest/headline/get-headline-list?'
+    + QueryString.stringify(this.state.queryParams))
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
