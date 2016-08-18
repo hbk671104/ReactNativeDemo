@@ -16,6 +16,7 @@ class ReactNativeDemo extends Component {
       <Navigator
         initialRoute={{name: 'HeadlineListScene', object: ''}}
         renderScene={this.renderScene.bind(this)}
+        configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromRight}
       />
     );
   }
